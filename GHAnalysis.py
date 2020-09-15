@@ -1,8 +1,7 @@
 import json
 import os
 import argparse
-import coverage
-import common
+import pandas as pd
 
 class Data:
     def __init__(self, dict_address: int = None, reload: int = 0): #定义data类的构造方法
@@ -34,7 +33,7 @@ class Data:
                             json_list.append(json.loads(_str))  #在列表末尾添加对象
                         except:
                             pass  #防止出错
-                records = self.__listOfNestedDict2ListOfDict(json_list)  #把这个列表变成字典
+                records = self.__listOfNestedDict2ListOfDict(json_list)
                 json_list.clear()
                 for i in records:
                     if not self.__4Events4PerP.get(i['actor__login'], 0):  #每个人四个事件的数量
