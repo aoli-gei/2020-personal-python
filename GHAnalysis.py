@@ -9,7 +9,7 @@ import mmap
 class Data:
     def __init__(self, dict_address: int = None, reload: int = 0): #定义data类的构造方法
         localtime = time.asctime( time.localtime(time.time()) )
-        print(localtime)
+        #print(localtime)
         if reload == 1:
             try:
                 os.makedirs('json_save')  #创建文件夹
@@ -47,7 +47,7 @@ class Data:
                         x= json.loads(x)
                         self.count(x)
         localtime = time.asctime( time.localtime(time.time()) )
-        print(localtime)
+        #print(localtime)
         with open('1.json', 'w', encoding='utf-8') as f:  #打开，并写入
             json.dump(self.__4Events4PerP,f)
         with open('2.json', 'w', encoding='utf-8') as f:  #打开，并写入
