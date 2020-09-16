@@ -4,7 +4,7 @@ import argparse
 import multiprocessing
 import shutil
 import time
-import sqlite3
+import mmap
 
 class Data:
     def __init__(self, dict_address: int = None, reload: int = 0): #定义data类的构造方法
