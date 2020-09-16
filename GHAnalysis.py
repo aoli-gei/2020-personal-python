@@ -94,8 +94,8 @@ class Data:
             self.save(json_list,f)
             
     def save(self,json_list,f1):
-        print("saving...")
-        print(os.getppid())
+        #print("saving...")
+        #print(os.getppid())
         record = self.__listOfNestedDict2ListOfDict(json_list)
         k=[]
         for i in record:
@@ -142,6 +142,7 @@ class Data:
             return self.__4Events4PerPPerR[username][reponame].get(event,0)
 
 #底下这些应该是命令行的操作
+
 class Run:
     def __init__(self):
         self.parser = argparse.ArgumentParser()
