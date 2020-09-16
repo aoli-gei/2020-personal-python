@@ -12,10 +12,9 @@ class Data:
         print(localtime)
         if reload == 1:
             try:
-                os.makedirs('json_save')
+                os.makedirs('json_save')  #创建文件夹
             except:
-                # os.remove('json_1')     #无法删除
-                shutil.rmtree('json_save')  # 可以
+                shutil.rmtree('json_save')
                 os.makedirs('json_save')
             self.__init(dict_address)
         if dict_address is None and not os.path.exists('1.json') and not os.path.exists('2.json') and not os.path.exists('3.json'):
@@ -36,8 +35,8 @@ class Data:
         for root, dic, files in os.walk(dict_address):  #os.walk用来遍历一个目录内各个子目录和子文件
             pool = multiprocessing.Pool(processes=8)
             for f in files: #遍历整个文件夹的文件
-                self.write1(f,dict_address)
-                #pool.apply_async(self.write1,args=(f,dict_address))
+                #self.write1(f,dict_address)
+                pool.apply_async(self.write1,args=(f,dict_address))
             pool.close()
             pool.join()
         for root, dic, files in os.walk(dict_address):
@@ -47,34 +46,6 @@ class Data:
                                  'r', encoding='utf-8').read()
                         x= json.loads(x)
                         self.count(x)
-        '''
-                if f[-5:] == '.json':   #如果文件的后缀为.json
-                    json_path = f       #json_path记录下文件的地址
-                    x = open(dict_address+'\\'+json_path,  #打开json文件，并返回文件对象（字符串），用只读方式，文件的指针默认放在文件开头
-                             'r', encoding='utf-8').read()  #读文件，这里应该要改成readline，一次只读取一行，不然可能会裂开
-                    str_list = [_x for _x in x.split('\n') if len(_x) > 0]#定义了一个列表，把每一行都加入到列表中去，split通过指定分隔符对字符串进行分片，这里用的回车，所以就按行分
-                    for i, _str in enumerate(str_list):  #将这个str_list组合成一个索引序列
-                        try:
-                            json_list.append(json.loads(_str))  #在列表末尾添加对象
-                        except:
-                            pass  #防止出错
-                records = self.__listOfNestedDict2ListOfDict(json_list)  #把这个列表变成字典
-                json_list.clear()
-                for i in records:
-                    if not self.__4Events4PerP.get(i['actor__login'], 0):  #每个人四个事件的数量
-                        self.__4Events4PerP.update({i['actor__login']: {}})
-                        self.__4Events4PerPPerR.update({i['actor__login']: {}})
-                    self.__4Events4PerP[i['actor__login']][i['type']
-                                                ] = self.__4Events4PerP[i['actor__login']].get(i['type'], 0)+1
-                    if not self.__4Events4PerR.get(i['repo__name'], 0):  #每个项目四个事件的数量
-                        self.__4Events4PerR.update({i['repo__name']: {}})
-                    self.__4Events4PerR[i['repo__name']][i['type']
-                                            ] = self.__4Events4PerR[i['repo__name']].get(i['type'], 0)+1
-                    if not self.__4Events4PerPPerR[i['actor__login']].get(i['repo__name'], 0): #每个人在每个项目
-                        self.__4Events4PerPPerR[i['actor__login']].update({i['repo__name']: {}})
-                    self.__4Events4PerPPerR[i['actor__login']][i['repo__name']][i['type']
-                                                                ] = self.__4Events4PerPPerR[i['actor__login']][i['repo__name']].get(i['type'], 0)+1
-                    '''
         localtime = time.asctime( time.localtime(time.time()) )
         print(localtime)
         with open('1.json', 'w', encoding='utf-8') as f:  #打开，并写入
@@ -86,8 +57,8 @@ class Data:
                 #上面这些看不懂
 
     def count(self,records):
-        print("counting...")
-        print(os.getppid())
+        #print("counting...")
+        #print(os.getppid())
         for i in records:
             if not self.__4Events4PerP.get(i['actor__login'], 0):  #每个人四个事件的数量
                 self.__4Events4PerP.update({i['actor__login']: {}})
@@ -104,8 +75,8 @@ class Data:
                                                         ] = self.__4Events4PerPPerR[i['actor__login']][i['repo__name']].get(i['type'], 0)+1
     
     def write1(self,f,dict_address):  #用来多进程读入
-        print("writing....")
-        print(os.getppid())
+        #print("writing....")
+        #print(os.getppid())
         json_list=[]
         if f[-5:] == '.json':   #如果文件的后缀为.json
             json_path = f       #json_path记录下文件的地址
@@ -130,7 +101,7 @@ class Data:
         for i in record:
             k.append({'actor__login':i['actor__login'],'type':i['type'],'repo__name':i['repo__name']})
         with open('json_save\\'+f1, 'w', encoding='utf-8') as f:  # 初始化
-            json.dump(k, f)  # 写入
+            json.dump(k, f)
 
 
     def __parseDict(self, d: dict, prefix: str):  #用于与底下的函数配合来将列表转换为字典，所以不用动这两个
@@ -143,7 +114,7 @@ class Data:
                 _d[_k] = d[k]
         return _d
 
-    def __listOfNestedDict2ListOfDict(self, a: list):  #用于转换
+    def __listOfNestedDict2ListOfDict(self, a: list):  #用于转换json
         records = []
         for d in a:
             _d = self.__parseDict(d, '')
@@ -170,7 +141,7 @@ class Data:
         else:
             return self.__4Events4PerPPerR[username][reponame].get(event,0)
 
-#低下这些应该是命令行的操作
+#底下这些应该是命令行的操作
 class Run:
     def __init__(self):
         self.parser = argparse.ArgumentParser()
