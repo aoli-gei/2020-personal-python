@@ -36,8 +36,8 @@ class Data:
         for root, dic, files in os.walk(dict_address):  #os.walk用来遍历一个目录内各个子目录和子文件
             pool = multiprocessing.Pool(processes=8)
             for f in files: #遍历整个文件夹的文件
-                #self.write1(f,dict_address)
-                pool.apply_async(self.write1,args=(f,dict_address))
+                self.write1(f,dict_address)
+                #pool.apply_async(self.write1,args=(f,dict_address))
             pool.close()
             pool.join()
         for root, dic, files in os.walk(dict_address):
